@@ -1,0 +1,15 @@
+Am inceput prin a citi inputul (nr de workeri si fisierele de intrare si iesire) in metoda 
+processInputFile, iar initializarea acestor date le-am facut in metoda initialize. De aici 
+am apelat metoda processTextFile care proceseaza fisierele de input si realizeaza fragmentarea 
+textului, pentru a obtine offsetul si lungimea fragmentelor necesare taskurilor de MAP.
+Astfel, am creat o lista de taskuri mapTasks pentru MAP, carora le-am trimis offsetul de inceput si
+dimensiunea fragmentului de procesat. MyMapTask creeaza un dictionar cu key = fileName si value = lista de obiecte
+care contin un dictionar (cu lungimile cuvintelor si nr de aparitii) si o lista cu cuvintele cele mai lungi.
+Apoi am pornit taskurile cu tpe.submit si oprit la fine cu shutdown, folosind synchronized pe un obiect
+pentru folosirea notify si wait. La fel fel si la Reduce, le-am pornit si inchis la fel, iar 
+logica taskurilor de Reduce a fost de a combina dictionarele de la MAP in un alt dictionar comun, unde se aduna
+nr de aparitii la lungimile caracteristice existente, si la fel si listele de cuvinte maximale se combina.
+De asemenea,  am calculat rangul conform formulei din enunt, nr de cuvinte maxime si lungimea lor tot in REDUCE, ,
+desigur dupa etapa de combinare, populand cu aceste date un dictionar cu key = fileName si value = obiecte cu aceste
+3 date necesare outputului. La sfarsit am inchis executorservice-ul cu shutdown.
+Apoi am sortat fisierele dupa rang si am scris outputul in fisierele de output conform formatului cerut.
